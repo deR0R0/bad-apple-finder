@@ -13,7 +13,7 @@ Exactly what the title says.
 3. Reduce the frames of the video to <12 fps
 4. Put the file into the same directory of ```frame-extracter```
 5. Install the python dependencies: ```numpy^2.2.6``` and ```opencv-python^4.12.0.88```
-6. In the directory "frame-extractor" run: ```python3 frame-extractor.py``` (it'll look for a video called ```bad-apple.mp4```)
+6. In the directory "frame-extractor" run: ```python3 frame-extractor.py``` (it'll prompt you for a video file name, make sure the video is in the same folder/directory as the python script)
 7. Wait for the frames to be extracted
 8. Go back a directory and run ```python3 player.py```
 

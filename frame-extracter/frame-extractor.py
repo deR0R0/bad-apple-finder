@@ -5,7 +5,15 @@ import numpy as np
 import time
 import json
 
-vid = cv2.VideoCapture('/Users/rorozee/Documents/Programming Projects/Python/Bad Apple!!/frame-extracter/bad-apple.mp4')
+# inputs
+user_video_path = input("Enter the path to the video file (default is 'bad-apple.mp4'): ") or 'bad-apple.mp4'
+user_video_path = os.path.abspath(user_video_path)
+
+if not os.path.exists(user_video_path):
+    print(f"Video file '{user_video_path}' does not exist. Please check the path and try again.")
+    exit(1)
+
+vid = cv2.VideoCapture(user_video_path)
 
 # getting pixel data
 # we're going to get all the pixels within the range of 0-11 x
