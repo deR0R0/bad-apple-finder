@@ -1,0 +1,74 @@
+import os
+import subprocess
+import cv2
+import numpy as np
+import time
+import json
+
+vid = cv2.VideoCapture('/Users/rorozee/Documents/Programming Projects/Python/Bad Apple!!/frame-extracter/bad-apple.mp4')
+
+# getting pixel data
+# we're going to get all the pixels within the range of 0-11 x
+# then we're gonna see what color pixel is most present in the range via
+# the count and candidate algorithm.
+# we're gonna do this 40 times.
+def get_area_pixels(image, y):
+    area_pixels = []
+
+    for x in range(40):
+        count = 0
+        candidate = [0, 0, 0]  # default candidate is black
+        for x_range in range(12):
+            for y_range in range(12):
+                pixel_color = image[(y * 12) + y_range, (x * 12) + x_range]
+
+                if pixel_color[0] > 151 and pixel_color[1] > 151 and pixel_color[2] > 151:  # white pixel/gray pixel
+                    count += 1
+                else:
+                    count -= 1 # most likely black pixel
+
+                # if the count is positive, we consider white to be the candidate
+                if count > 0:
+                    candidate = [253, 253, 253] # white pixel
+                else:
+                    candidate = [0, 0, 0] # black pixel
+
+        area_pixels.append(candidate)
+
+    return area_pixels
+
+def get_frame_pixels(image):
+    frame_pixels = []
+
+    for y in range(30):
+        area_pixels = get_area_pixels(image, y)
+        frame_pixels.append(area_pixels)
+
+    return frame_pixels
+
+
+def get_all_frames():
+    all_frames = []
+    curr_frame = 1
+
+    while True:
+        success, frame = vid.read()
+        if not success:
+            break
+
+        all_frames.append(get_frame_pixels(frame))
+        print(f"Extracted frame {curr_frame}")
+        curr_frame += 1
+
+    pixels = {
+        "pixels": all_frames
+    }
+
+    with open("frame_pixels.json", "w") as f:
+        json.dump(pixels, f)
+
+# get all ze frames
+start_time = time.time()
+get_all_frames()
+end_time = time.time()
+print(f"Time taken to extract frames: {end_time - start_time} seconds")
