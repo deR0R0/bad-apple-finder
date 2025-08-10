@@ -1,13 +1,18 @@
 import os
-import subprocess
+import sys
 import cv2
-import numpy as np
 import time
 import json
 
+def get_application_path():
+    if getattr(sys, 'frozen', False):
+        application_path = os.path.dirname(sys.executable)
+        return application_path
+    return os.path.dirname(os.path.abspath(__file__))
+
 # inputs
-user_video_path = input("Enter the path to the video file (default is 'bad-apple.mp4'): ") or 'bad-apple.mp4'
-user_video_path = os.path.abspath(user_video_path)
+user_video_path = input("Enter the RELATIVE path to the video file (default is 'bad-apple.mp4'): ") or 'bad-apple.mp4'
+user_video_path = os.path.join(get_application_path(), user_video_path)
 
 if not os.path.exists(user_video_path):
     print(f"Video file '{user_video_path}' does not exist. Please check the path and try again.")
@@ -72,7 +77,7 @@ def get_all_frames():
         "pixels": all_frames
     }
 
-    with open("frame_pixels.json", "w") as f:
+    with open(os.path.join(get_application_path(), "frame_pixels.json"), "w") as f:
         json.dump(pixels, f)
 
 # get all ze frames
