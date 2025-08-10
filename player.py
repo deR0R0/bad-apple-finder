@@ -3,7 +3,7 @@ import subprocess
 import json
 import time
 
-all_frames = json.load(open("frame_pixels.json", "r"))
+all_frames = json.load(open(os.path.abspath("frame_pixels.json"), "r"))
 frame_pixels = all_frames["pixels"]
 delay_time = 0.5
 
