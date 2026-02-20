@@ -1,0 +1,13 @@
+# output
+/abc
+/Executables
+
+# files
+bad-apple.mp4
+bad-apple.png
+frame_pixels.json
+extracted_frame.png
+
+# python stuff
+/__pycache__/
+/virenv

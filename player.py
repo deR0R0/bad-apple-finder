@@ -13,6 +13,7 @@ def get_application_path():
 all_frames = json.load(open(os.path.join(get_application_path(), "frame_pixels.json"), "r"))
 frame_pixels = all_frames["pixels"]
 delay_time = 0.5
+directoryName = "abc"
 
 print("Successfully loaded " + str(len(frame_pixels)) + " frames.")
 print("Ready to play Bad Apple!! Make sure Finder is the correct width and height")
@@ -27,12 +28,12 @@ def play_frame(frame_number):
             # check for white pixel
             if pixel == [253, 253, 253]:
                 # check if theres already a folder there
-                if os.path.exists(os.path.join(get_application_path(), f"./abc/{count}/")):
+                if os.path.exists(os.path.join(get_application_path(), f"./{directoryName}/{count}/")):
                     # remove the folder if it exists
-                    os.rmdir(os.path.join(get_application_path(), f"./abc/{count}/"))
+                    os.rmdir(os.path.join(get_application_path(), f"./{directoryName}/{count}/"))
             else: # black pixel? create a folder if it doesn't exist
-                if not os.path.exists(os.path.join(get_application_path(), f"./abc/{count}/")):
-                    os.makedirs(os.path.join(get_application_path(), f"./abc/{count}/"))
+                if not os.path.exists(os.path.join(get_application_path(), f"./{directoryName}/{count}/")):
+                    os.makedirs(os.path.join(get_application_path(), f"./{directoryName}/{count}/"))
 
     script = '''
     tell application "Finder"
@@ -63,9 +64,15 @@ user_delay_time = input("Enter delay time between frames in seconds (default is 
 if user_delay_time:
     try:
         delay_time = float(user_delay_time)
+        print(f"Using delay time of {delay_time} seconds.")
+        print(f"Estimated total play time: {delay_time * len(frame_pixels) / 60:.2f} minutes.")
     except ValueError:
         print("Invalid input, using default delay time of 0.5 seconds.")
         delay_time = 0.5
+
+# make sure to fill in everything for the first
+# frame of the video
+play_frame(frame_pixels[0])
 
 input("[ENTER] Start Playing Bad Apple!!")
 
